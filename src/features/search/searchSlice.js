@@ -14,8 +14,8 @@ export const fetchListPokemon = createAsyncThunk(
 const initialState = {
   searchTerm: "",
   loading: true,
-  ListPokemons: {},
-  filteredPokemons: {},
+  ListPokemons: [],
+  filteredPokemons: [],
 };
 
 export const searchSlice = createSlice({

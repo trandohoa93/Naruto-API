@@ -1,23 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const API_BASE_URL = "https://pokeapi.co/api/v2";
+const API_BASE_URL = "https://naruto-api.fly.dev/api/v1/characters/";
 
 export const fetchPokemon = createAsyncThunk(
   "pokemon/fetchPokemon",
-  async (pokemonName) => {
-    const response = await fetch(`${API_BASE_URL}/pokemon/${pokemonName}`);
+  async (id) => {
+    const response = await fetch(`${API_BASE_URL}${id}`);
     const Pokemon = await response.json();
     return Pokemon;
   }
 );
 
 const initialState = {
+  loading: true,
   Pokemon: [],
-  loading: "idle",
 };
 
-export const cardSlice = createSlice({
-  name: "card",
+export const CardSlice = createSlice({
+  name: "pokemon",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -35,4 +35,4 @@ export const cardSlice = createSlice({
   },
 });
 
-export default cardSlice.reducer;
+export default CardSlice.reducer;

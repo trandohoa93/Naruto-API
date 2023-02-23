@@ -1,24 +1,24 @@
 /* eslint-disable react/prop-types */
-import PropTypes from "prop-types";
 
+import { Link } from "react-router-dom";
 function PokemonCard({ pokemon }) {
-  const { name, images, about } = pokemon;
+  const { id, name, images, about } = pokemon;
   return (
     <div className="mx-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#" className="bg-indigo-300">
         <img className="object-cover h-48 w-96 ..." src={images[0]} alt="" />
       </a>
       <div className="p-5">
-        <a href="#">
+        <Link to={`/characters/${id}`}>
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             {name}
           </h5>
-        </a>
+        </Link>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {about.toString().slice(0, 100) + "..."}
         </p>
-        <a
-          href="#"
+        <Link
+          to={`/characters/${id}`}
           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Get Info
@@ -35,12 +35,9 @@ function PokemonCard({ pokemon }) {
               clipRule="evenodd"
             ></path>
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );
 }
-PokemonCard.propTypes = {
-  name: PropTypes.string.isRequired,
-};
 export default PokemonCard;
