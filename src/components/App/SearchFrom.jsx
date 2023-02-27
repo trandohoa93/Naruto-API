@@ -1,13 +1,33 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchItem } from "../../features/search/searchSlice";
+import { useSearchParams, useLocation } from "react-router-dom";
 function SearchForm() {
+  const location = useLocation();
+  const [inputValue, setInputValue] = useState(location.search.slice(9));
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    dispatch(searchItem(location.search.slice(9)));
+    setInputValue(location.search.slice(9));
+  }, [location.search, dispatch, setInputValue]);
+
   const handleSearchInputChange = (event) => {
-    dispatch(searchItem(event.target.value));
+    let search;
+    if (event.target.value) {
+      search = {
+        keyword: event.target.value,
+      };
+    } else {
+      search = undefined;
+    }
+    setSearchParams(search, { replace: true });
+    dispatch(searchItem(inputValue));
   };
   return (
     <div>
@@ -37,6 +57,7 @@ function SearchForm() {
             </svg>
           </div>
           <input
+            value={searchParams.keyword}
             onChange={handleSearchInputChange}
             type="search"
             id="default-search"

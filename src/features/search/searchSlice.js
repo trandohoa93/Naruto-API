@@ -24,12 +24,6 @@ export const searchSlice = createSlice({
   reducers: {
     searchItem: (state, action) => {
       state.searchTerm = action.payload;
-      if (!state.searchTerm) {
-        state.filteredPokemons = state.ListPokemons;
-      }
-      state.filteredPokemons = state.ListPokemons.filter((item) =>
-        item.name.toLowerCase().includes(state.searchTerm.toLowerCase())
-      );
     },
   },
   extraReducers: (builder) => {

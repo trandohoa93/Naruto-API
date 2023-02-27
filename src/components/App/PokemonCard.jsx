@@ -6,7 +6,11 @@ function PokemonCard({ pokemon }) {
   return (
     <div className="mx-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#" className="bg-indigo-300">
-        <img className="object-cover h-48 w-96 ..." src={images[0]} alt="" />
+        <img
+          className="rounded-t-lg h-48 w-96 object-cover"
+          src={images[0]}
+          alt=""
+        />
       </a>
       <div className="p-5">
         <Link to={`/characters/${id}`}>
