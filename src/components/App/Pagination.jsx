@@ -4,34 +4,51 @@ import ReactPaginate from "react-paginate";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import PokemonList from "./PokemonList";
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Pagination = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [pageParams, setPageParams] = useState(
+    new URLSearchParams(location.search)
+  );
+
+  // Loading
   const loading = useSelector((state) => state.search.loading);
   let filteredPokemons = useSelector((state) => state.search.filteredPokemons);
+  const ListPokemons = useSelector((state) => state.search.ListPokemons);
 
-  const search = useSelector((state) => state.search.searchTerm);
-  filteredPokemons = filteredPokemons.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+  const searchTerm = useSelector((state) => state.search.searchTerm);
+  filteredPokemons = ListPokemons.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  // Search
 
   // Pagination
   const itemsPerPage = 6;
   const [itemOffset, setItemOffset] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(pageParams.get("page") || 0);
+
   //
-  const endOffset = itemOffset + itemsPerPage;
+  const endOffset = page * itemsPerPage + itemsPerPage;
   const currentItems = filteredPokemons.slice(itemOffset, endOffset);
+  console.log(itemOffset, page);
   const pageCount = Math.ceil(filteredPokemons.length / itemsPerPage);
   const handlePageClick = (event) => {
+    // Update searchParams with new value
+    pageParams.set("page", event.selected);
+    navigate(`?${pageParams.toString()}`);
+
     const newOffset = (event.selected * itemsPerPage) % filteredPokemons.length;
     setItemOffset(newOffset);
     setPage(event.selected);
-    console.log(page);
   };
   useEffect(() => {
-    setPage(0);
+    setPageParams(new URLSearchParams(location.search));
     setItemOffset(0);
-  }, [search]);
+    pageParams.set("page", 0);
+    setPage(0);
+  }, [searchTerm]);
   return (
     <>
       <PokemonList loading={loading} filteredPokemons={currentItems} />

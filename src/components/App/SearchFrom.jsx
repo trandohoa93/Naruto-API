@@ -2,33 +2,34 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchItem } from "../../features/search/searchSlice";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 function SearchForm() {
-  const location = useLocation();
-  const [inputValue, setInputValue] = useState(location.search.slice(9));
-  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useState(
+    new URLSearchParams(location.search)
+  );
+  const [inputValue, setInputValue] = useState(searchParams.get("input") || "");
 
   useEffect(() => {
-    dispatch(searchItem(location.search.slice(9)));
-    setInputValue(location.search.slice(9));
+    setSearchParams(new URLSearchParams(location.search));
+    dispatch(searchItem(inputValue));
   }, [location.search, dispatch, setInputValue]);
 
-  const handleSearchInputChange = (event) => {
-    let search;
-    if (event.target.value) {
-      search = {
-        keyword: event.target.value,
-      };
-    } else {
-      search = undefined;
-    }
-    setSearchParams(search, { replace: true });
-    dispatch(searchItem(inputValue));
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Update searchParams with new value
+    searchParams.set("input", inputValue);
+    searchParams.set("page", 0);
+    // Update browser history with new URL
+    navigate(`?${searchParams.toString()}`);
+  };
+
   return (
     <div>
       <form className="max-w-xl mx-auto">
@@ -57,8 +58,8 @@ function SearchForm() {
             </svg>
           </div>
           <input
-            value={searchParams.keyword}
-            onChange={handleSearchInputChange}
+            value={inputValue}
+            onChange={handleInputChange}
             type="search"
             id="default-search"
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
