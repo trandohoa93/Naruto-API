@@ -22,6 +22,14 @@ export const searchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
+    selectInput: (state, action) => {
+      state.filteredPokemons = state.ListPokemons;
+      if (action.payload !== "all") {
+        state.filteredPokemons = state.ListPokemons.filter((item) => {
+          return item.info["Afiliação"] === action.payload;
+        });
+      }
+    },
     searchItem: (state, action) => {
       state.searchTerm = action.payload;
     },
@@ -42,6 +50,6 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { searchItem } = searchSlice.actions;
+export const { searchItem, selectInput } = searchSlice.actions;
 
 export default searchSlice.reducer;

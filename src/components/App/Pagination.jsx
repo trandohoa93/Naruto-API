@@ -1,57 +1,60 @@
 /* eslint-disable react/prop-types */
 import { useSelector } from "react-redux";
-import ReactPaginate from "react-paginate";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import PokemonList from "./PokemonList";
-import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
 
+import PokemonList from "./PokemonList";
+
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+
+const itemsPerPage = 6;
 const Pagination = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [pageParams, setPageParams] = useState(
-    new URLSearchParams(location.search)
-  );
 
   // Loading
-  const loading = useSelector((state) => state.search.loading);
-  let filteredPokemons = useSelector((state) => state.search.filteredPokemons);
-  const ListPokemons = useSelector((state) => state.search.ListPokemons);
-
+  const ListPokemons = useSelector((state) => state.search.filteredPokemons);
   const searchTerm = useSelector((state) => state.search.searchTerm);
-  filteredPokemons = ListPokemons.filter((item) =>
+
+  const pageParams = new URLSearchParams(location.search);
+
+  const [page, setPage] = useState(pageParams.get("page") || 0);
+  const [itemOffset, setItemOffset] = useState(page * itemsPerPage);
+  const [firstLoading, setFirstLoading] = useState(true);
+
+  const ItemPokemon = ListPokemons.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  // Search
-
-  // Pagination
-  const itemsPerPage = 6;
-  const [itemOffset, setItemOffset] = useState(0);
-  const [page, setPage] = useState(pageParams.get("page") || 0);
 
   //
   const endOffset = page * itemsPerPage + itemsPerPage;
-  const currentItems = filteredPokemons.slice(itemOffset, endOffset);
-  console.log(itemOffset, page);
-  const pageCount = Math.ceil(filteredPokemons.length / itemsPerPage);
+  const currentItems = ItemPokemon.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(ItemPokemon.length / itemsPerPage);
+
   const handlePageClick = (event) => {
-    // Update searchParams with new value
     pageParams.set("page", event.selected);
     navigate(`?${pageParams.toString()}`);
 
-    const newOffset = (event.selected * itemsPerPage) % filteredPokemons.length;
+    const newOffset = (event.selected * itemsPerPage) % ItemPokemon.length;
+
     setItemOffset(newOffset);
     setPage(event.selected);
   };
   useEffect(() => {
-    setPageParams(new URLSearchParams(location.search));
-    setItemOffset(0);
-    pageParams.set("page", 0);
-    setPage(0);
+    if (!firstLoading) {
+      setPage(0);
+      setItemOffset(0);
+    }
+    pageParams.set("input", searchTerm);
   }, [searchTerm]);
+
+  useEffect(() => {
+    setFirstLoading(false);
+  }, []);
   return (
     <>
-      <PokemonList loading={loading} filteredPokemons={currentItems} />
+      <PokemonList filteredPokemons={currentItems} />
       <div className="max-w-xl mx-auto">
         <ReactPaginate
           breakLabel="..."

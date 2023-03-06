@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
-import Loading from "./Loading";
+
 import PokemonCard from "./PokemonCard";
 
-function PokemonList({ loading, filteredPokemons }) {
-  if (loading) {
-    return <Loading />;
-  }
+function PokemonList({ filteredPokemons }) {
   if (!filteredPokemons) {
     return <h2>no cocktails matched your search criteria</h2>;
   }
