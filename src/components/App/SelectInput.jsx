@@ -28,7 +28,7 @@ const SelectInput = () => {
   };
 
   return (
-    <div className="pl-20 pr-20">
+    <div className="pl-20 pr-20 max-w-xl">
       <label
         htmlFor="countries"
         className="block mb-2 text-sm font-medium text-gray-900"
