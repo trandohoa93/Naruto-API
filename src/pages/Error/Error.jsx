@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import SearchForm from "../../components/App/SearchFrom";
-SearchForm;
+
 function Error() {
   return (
     <div className="text-center ">

@@ -4,27 +4,26 @@ import { getUniqueValues } from "../../utils/helpers";
 import { selectInput } from "../../features/search/searchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const SelectInput = () => {
-  // URL
+const SelectForm = () => {
   // eslint-disable-next-line no-unused-vars
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [villageParams] = useState(new URLSearchParams(location.search));
-  const [valueSelect, setValueSelect] = useState(
-    villageParams.get("village") || "all"
+  const [queryParams] = useState(new URLSearchParams(location.search));
+  const [selectedVillage, setselectedVillage] = useState(
+    queryParams.get("village") || "all"
   );
 
-  const ListPokemons = useSelector((state) => state.search.ListPokemons);
-  const village = getUniqueValues(ListPokemons, "Afiliação");
+  const pokemons = useSelector((state) => state.search.ListPokemons);
+  const village = getUniqueValues(pokemons, "Afiliação");
   useEffect(() => {
-    dispatch(selectInput(valueSelect));
+    dispatch(selectInput(selectedVillage));
   }, []);
-  const handleSelect = (event) => {
+  const handleVillageSelection = (event) => {
     dispatch(selectInput(event.target.value));
-    setValueSelect(event.target.value);
-    villageParams.set("village", event.target.value);
-    navigate(`?${villageParams.toString()}`);
+    setselectedVillage(event.target.value);
+    queryParams.set("village", event.target.value);
+    navigate(`?${queryParams.toString()}`);
   };
 
   return (
@@ -36,8 +35,8 @@ const SelectInput = () => {
         Select Village
       </label>
       <select
-        value={valueSelect}
-        onChange={handleSelect}
+        value={selectedVillage}
+        onChange={handleVillageSelection}
         id="countries"
         className="w-1/6 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       >
@@ -52,4 +51,4 @@ const SelectInput = () => {
     </div>
   );
 };
-export default SelectInput;
+export default SelectForm;

@@ -23,10 +23,8 @@ function SearchForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Update searchParams with new value
     searchParams.set("input", inputValue);
     searchParams.set("page", 0);
-    // Update browser history with new URL
     navigate(`?${searchParams.toString()}`);
   };
 

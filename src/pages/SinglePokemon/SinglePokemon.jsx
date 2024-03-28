@@ -12,7 +12,6 @@ function SinglePokemon() {
   useEffect(() => {
     dispatch(fetchPokemon(id));
   }, []);
-  console.log(loading, Pokemon);
   const { name, images, info, about } = Pokemon;
   if (loading) {
     return <Loading />;

@@ -8,18 +8,18 @@ import PokemonList from "./PokemonList";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
+const defaultpagenumber = 0;
 const itemsPerPage = 6;
 const Pagination = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Loading
   const ListPokemons = useSelector((state) => state.search.filteredPokemons);
   const searchTerm = useSelector((state) => state.search.searchTerm);
 
   const pageParams = new URLSearchParams(location.search);
 
-  const [page, setPage] = useState(pageParams.get("page") || 0);
+  const [page, setPage] = useState(pageParams.get("page") || defaultpagenumber);
   const [itemOffset, setItemOffset] = useState(page * itemsPerPage);
   const [firstLoading, setFirstLoading] = useState(true);
 
@@ -27,7 +27,6 @@ const Pagination = () => {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  //
   const endOffset = page * itemsPerPage + itemsPerPage;
   const currentItems = ItemPokemon.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(ItemPokemon.length / itemsPerPage);

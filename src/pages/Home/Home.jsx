@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchListPokemon } from "../../features/search/searchSlice";
 import SearchForm from "../../components/App/SearchFrom";
 import Pagination from "../../components/App/Pagination";
-import SelectInput from "../../components/App/SelectInput";
+import SelectForm from "../../components/App/SelectForm";
 import Loading from "../../components/App/Loading";
 
 function Home() {
@@ -20,7 +20,7 @@ function Home() {
     <div className="container mx-auto">
       <div className="pt-10 pr-10 pf-10">
         <SearchForm />
-        <SelectInput />
+        <SelectForm />
       </div>
       <Pagination />
     </div>
