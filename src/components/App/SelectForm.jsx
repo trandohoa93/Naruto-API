@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUniqueValues } from "../../utils/helpers";
+import { getAllVillage } from "../../helpers/getAllVillage";
 import { selectInput } from "../../features/search/searchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -14,8 +14,8 @@ const SelectForm = () => {
     queryParams.get("village") || "all"
   );
 
-  const pokemons = useSelector((state) => state.search.ListPokemons);
-  const village = getUniqueValues(pokemons, "Afiliação");
+  const pokemons = useSelector((state) => state.search.Pokemons);
+  const village = getAllVillage(pokemons, "Afiliação");
   useEffect(() => {
     dispatch(selectInput(selectedVillage));
   }, []);

@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
-
-import PokemonList from "./PokemonList";
+import PokemonGallery from "./PokemonGallery";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
@@ -14,7 +13,7 @@ const Pagination = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const ListPokemons = useSelector((state) => state.search.filteredPokemons);
+  const Pokemons = useSelector((state) => state.search.filteredPokemons);
   const searchTerm = useSelector((state) => state.search.searchTerm);
 
   const pageParams = new URLSearchParams(location.search);
@@ -23,7 +22,7 @@ const Pagination = () => {
   const [itemOffset, setItemOffset] = useState(page * itemsPerPage);
   const [firstLoading, setFirstLoading] = useState(true);
 
-  const ItemPokemon = ListPokemons.filter((item) =>
+  const ItemPokemon = Pokemons.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -53,7 +52,7 @@ const Pagination = () => {
   }, []);
   return (
     <>
-      <PokemonList filteredPokemons={currentItems} />
+      <PokemonGallery filteredPokemons={currentItems} />
       <div className="max-w-xl mx-auto">
         <ReactPaginate
           breakLabel="..."

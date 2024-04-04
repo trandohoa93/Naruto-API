@@ -2,7 +2,7 @@
 
 import PokemonCard from "./PokemonCard";
 
-function PokemonList({ filteredPokemons }) {
+function PokemonGallery({ filteredPokemons }) {
   if (!filteredPokemons) {
     return <h2>no cocktails matched your search criteria</h2>;
   }
@@ -17,4 +17,4 @@ function PokemonList({ filteredPokemons }) {
   );
 }
 
-export default PokemonList;
+export default PokemonGallery;

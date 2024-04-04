@@ -2,19 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const API_BASE_URL = "https://naruto-api.fly.dev/api/v1/characters";
 
-export const fetchListPokemon = createAsyncThunk(
-  "pokemon/fetchListPokemon",
+export const fetchPokemons = createAsyncThunk(
+  "pokemon/fetchPokemons",
   async () => {
     const response = await fetch(`${API_BASE_URL}`);
-    const ListPokemons = await response.json();
-    return ListPokemons;
+    const Pokemons = await response.json();
+    return Pokemons;
   }
 );
 
 const initialState = {
   searchTerm: "",
   loading: true,
-  ListPokemons: [],
+  Pokemons: [],
   filteredPokemons: [],
 };
 
@@ -23,9 +23,9 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     selectInput: (state, action) => {
-      state.filteredPokemons = state.ListPokemons;
+      state.filteredPokemons = state.Pokemons;
       if (action.payload !== "all") {
-        state.filteredPokemons = state.ListPokemons.filter((item) => {
+        state.filteredPokemons = state.Pokemons.filter((item) => {
           return item.info["Afiliação"] === action.payload;
         });
       }
@@ -36,15 +36,15 @@ export const searchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchListPokemon.pending, (state) => {
+      .addCase(fetchPokemons.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchListPokemon.fulfilled, (state, action) => {
+      .addCase(fetchPokemons.fulfilled, (state, action) => {
         state.loading = false;
-        state.ListPokemons = action.payload;
+        state.Pokemons = action.payload;
         state.filteredPokemons = action.payload;
       })
-      .addCase(fetchListPokemon.rejected, (state) => {
+      .addCase(fetchPokemons.rejected, (state) => {
         state.loading = false;
       });
   },
